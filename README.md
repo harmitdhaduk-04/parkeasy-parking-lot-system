@@ -47,10 +47,6 @@ The project is structured into separated header and implementation files, adheri
    - Saves records upon explicit menu request and automatically during shutdown.
    - Implements atomic writes (`.tmp` write followed by rename) to prevent file truncation or corruption.
 
-8. **Automated Testing**:
-   - Unit test suite validating 17 critical test scenarios with 100% pass rate.
-   - Integrated with CMake CTest.
-
 ---
 
 ## 3. OOP Concepts Demonstrated
@@ -76,7 +72,7 @@ The project is structured into separated header and implementation files, adheri
 ```text
 ParkingLotManagementSystem/
 │
-├── CMakeLists.txt              # CMake build configuration for Library, App, and Tests
+├── CMakeLists.txt              # CMake build configuration for Library and App
 ├── README.md                   # Complete academic and architectural documentation
 │
 ├── include/                    # Header files (Declarations & Interfaces)
@@ -97,9 +93,6 @@ ParkingLotManagementSystem/
 │   ├── ParkingFeeCalculator.cpp
 │   ├── FileManager.cpp
 │   └── main.cpp                # Console UI, menu controller, user interaction
-│
-├── tests/
-│   └── ParkingLotTests.cpp     # Automated test suite (17 distinct test scenarios)
 │
 └── data/
     └── parking.txt             # Persistent storage file for active parking records
@@ -149,7 +142,7 @@ Bike|MH-02-XY-9999|Bob|4|2|TKT-1002|2026-10-16 17:58:12
 
 ---
 
-## 8. Build, Run, and Test Instructions
+## 8. Build and Run Instructions
 
 ### Prerequisites
 - C++17 compatible compiler (e.g. GCC / MinGW, Clang, or MSVC)
@@ -163,7 +156,7 @@ From the project root directory:
 # 1. Configure build files
 cmake -S . -B build -G "MinGW Makefiles"
 
-# 2. Compile application and tests
+# 2. Compile the application
 cmake --build build
 ```
 
@@ -172,44 +165,7 @@ cmake --build build
 ./build/ParkingLotApp.exe
 ```
 
-### Running the Automated Tests
-Run via CMake CTest:
-```bash
-ctest --test-dir build --output-on-failure
-```
-
-Or run the test executable directly:
-```bash
-./build/ParkingLotTests.exe
-```
-
----
-
-## 9. Automated Unit Test Scenarios (17 Scenarios)
-
-The test suite in `tests/ParkingLotTests.cpp` executes the following 17 scenarios:
-
-1. `Test_01_SuccessfullyParkCar`: Verifies parking a car, slot allocation, and ticket creation.
-2. `Test_02_SuccessfullyParkBike`: Verifies parking a bike and ticket creation.
-3. `Test_03_CorrectParkingFeeCar`: Validates ₹50/hr rate calculation.
-4. `Test_04_CorrectParkingFeeBike`: Validates ₹20/hr rate calculation.
-5. `Test_05_RejectDuplicateVehicleRegistrations`: Asserts `DuplicateVehicleException` on duplicate registration.
-6. `Test_06_RejectInvalidParkingDurations`: Asserts `InvalidDurationException` when hours ≤ 0.
-7. `Test_07_RejectParkingWhenCapacityIsFull`: Asserts `ParkingLotFullException` when capacity is exceeded.
-8. `Test_08_ReleaseParkingSpaceAfterRemoval`: Asserts slot release and occupancy count decrements.
-9. `Test_09_ReuseReleasedParkingSpace`: Confirms freed space is reallocated to new entries.
-10. `Test_10_SearchForExistingVehicle`: Tests overloaded search by registration and slot number.
-11. `Test_11_HandleNonexistentVehicleSearch`: Tests search queries for unparked vehicles.
-12. `Test_12_HandleRemovalOfNonexistentVehicle`: Asserts `VehicleNotFoundException` on bad removals.
-13. `Test_13_SaveAndReloadParkedVehiclesCorrectly`: Tests persistence round-trip.
-14. `Test_14_PreserveVehicleTypeAndParkingSpaceAfterReload`: Tests that vehicle types and slot numbers remain intact across persistence reloads.
-15. `Test_15_VerifyVehicleComparisonUsingOverloadedOperator`: Verifies `operator==` compares vehicles by registration.
-16. `Test_16_VerifyVehicleCountsBehaveAsDocumented`: Verifies distinction between lifetime object count vs. active parked count.
-17. `Test_17_VerifyFailedParkingOperationsDoNotCorruptRecords`: Verifies Strong Exception Guarantee (failed operations leave existing lot state intact).
-
----
-
-## 10. Sample Program Interaction
+## 9. Sample Program Interaction
 
 ```text
 ==================================================

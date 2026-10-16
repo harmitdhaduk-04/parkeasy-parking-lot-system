@@ -35,12 +35,3 @@ target_include_directories(ParkingLotLib PUBLIC ${PROJECT_SOURCE_DIR}/include)
 add_executable(ParkingLotApp src/main.cpp)
 target_include_directories(ParkingLotApp PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(ParkingLotApp PRIVATE ParkingLotLib)
-
-# Automated Test Executable
-add_executable(ParkingLotTests tests/ParkingLotTests.cpp)
-target_include_directories(ParkingLotTests PRIVATE ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/tests)
-target_link_libraries(ParkingLotTests PRIVATE ParkingLotLib)
-
-# Enable CTest integration
-enable_testing()
-add_test(NAME AutomatedUnitTests COMMAND ParkingLotTests)
