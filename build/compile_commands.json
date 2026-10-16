@@ -1,0 +1,56 @@
+[
+{
+  "directory": "C:/Users/HP/Desktop/Parking/build",
+  "command": "C:\\MinGW\\bin\\c++.exe  @CMakeFiles/ParkingLotLib.dir/includes_CXX.rsp -std=c++1z -Wall -Wextra -pedantic -o CMakeFiles\\ParkingLotLib.dir\\src\\ParkingFeeCalculator.cpp.obj -c C:\\Users\\HP\\Desktop\\Parking\\src\\ParkingFeeCalculator.cpp",
+  "file": "C:/Users/HP/Desktop/Parking/src/ParkingFeeCalculator.cpp",
+  "output": "CMakeFiles/ParkingLotLib.dir/src/ParkingFeeCalculator.cpp.obj"
+},
+{
+  "directory": "C:/Users/HP/Desktop/Parking/build",
+  "command": "C:\\MinGW\\bin\\c++.exe  @CMakeFiles/ParkingLotLib.dir/includes_CXX.rsp -std=c++1z -Wall -Wextra -pedantic -o CMakeFiles\\ParkingLotLib.dir\\src\\Vehicle.cpp.obj -c C:\\Users\\HP\\Desktop\\Parking\\src\\Vehicle.cpp",
+  "file": "C:/Users/HP/Desktop/Parking/src/Vehicle.cpp",
+  "output": "CMakeFiles/ParkingLotLib.dir/src/Vehicle.cpp.obj"
+},
+{
+  "directory": "C:/Users/HP/Desktop/Parking/build",
+  "command": "C:\\MinGW\\bin\\c++.exe  @CMakeFiles/ParkingLotLib.dir/includes_CXX.rsp -std=c++1z -Wall -Wextra -pedantic -o CMakeFiles\\ParkingLotLib.dir\\src\\Car.cpp.obj -c C:\\Users\\HP\\Desktop\\Parking\\src\\Car.cpp",
+  "file": "C:/Users/HP/Desktop/Parking/src/Car.cpp",
+  "output": "CMakeFiles/ParkingLotLib.dir/src/Car.cpp.obj"
+},
+{
+  "directory": "C:/Users/HP/Desktop/Parking/build",
+  "command": "C:\\MinGW\\bin\\c++.exe  @CMakeFiles/ParkingLotLib.dir/includes_CXX.rsp -std=c++1z -Wall -Wextra -pedantic -o CMakeFiles\\ParkingLotLib.dir\\src\\Bike.cpp.obj -c C:\\Users\\HP\\Desktop\\Parking\\src\\Bike.cpp",
+  "file": "C:/Users/HP/Desktop/Parking/src/Bike.cpp",
+  "output": "CMakeFiles/ParkingLotLib.dir/src/Bike.cpp.obj"
+},
+{
+  "directory": "C:/Users/HP/Desktop/Parking/build",
+  "command": "C:\\MinGW\\bin\\c++.exe  @CMakeFiles/ParkingLotLib.dir/includes_CXX.rsp -std=c++1z -Wall -Wextra -pedantic -o CMakeFiles\\ParkingLotLib.dir\\src\\ParkingTicket.cpp.obj -c C:\\Users\\HP\\Desktop\\Parking\\src\\ParkingTicket.cpp",
+  "file": "C:/Users/HP/Desktop/Parking/src/ParkingTicket.cpp",
+  "output": "CMakeFiles/ParkingLotLib.dir/src/ParkingTicket.cpp.obj"
+},
+{
+  "directory": "C:/Users/HP/Desktop/Parking/build",
+  "command": "C:\\MinGW\\bin\\c++.exe  @CMakeFiles/ParkingLotLib.dir/includes_CXX.rsp -std=c++1z -Wall -Wextra -pedantic -o CMakeFiles\\ParkingLotLib.dir\\src\\ParkingLot.cpp.obj -c C:\\Users\\HP\\Desktop\\Parking\\src\\ParkingLot.cpp",
+  "file": "C:/Users/HP/Desktop/Parking/src/ParkingLot.cpp",
+  "output": "CMakeFiles/ParkingLotLib.dir/src/ParkingLot.cpp.obj"
+},
+{
+  "directory": "C:/Users/HP/Desktop/Parking/build",
+  "command": "C:\\MinGW\\bin\\c++.exe  @CMakeFiles/ParkingLotLib.dir/includes_CXX.rsp -std=c++1z -Wall -Wextra -pedantic -o CMakeFiles\\ParkingLotLib.dir\\src\\FileManager.cpp.obj -c C:\\Users\\HP\\Desktop\\Parking\\src\\FileManager.cpp",
+  "file": "C:/Users/HP/Desktop/Parking/src/FileManager.cpp",
+  "output": "CMakeFiles/ParkingLotLib.dir/src/FileManager.cpp.obj"
+},
+{
+  "directory": "C:/Users/HP/Desktop/Parking/build",
+  "command": "C:\\MinGW\\bin\\c++.exe  @CMakeFiles/ParkingLotApp.dir/includes_CXX.rsp -std=c++1z -Wall -Wextra -pedantic -o CMakeFiles\\ParkingLotApp.dir\\src\\main.cpp.obj -c C:\\Users\\HP\\Desktop\\Parking\\src\\main.cpp",
+  "file": "C:/Users/HP/Desktop/Parking/src/main.cpp",
+  "output": "CMakeFiles/ParkingLotApp.dir/src/main.cpp.obj"
+},
+{
+  "directory": "C:/Users/HP/Desktop/Parking/build",
+  "command": "C:\\MinGW\\bin\\c++.exe  @CMakeFiles/ParkingLotTests.dir/includes_CXX.rsp -std=c++1z -Wall -Wextra -pedantic -o CMakeFiles\\ParkingLotTests.dir\\tests\\ParkingLotTests.cpp.obj -c C:\\Users\\HP\\Desktop\\Parking\\tests\\ParkingLotTests.cpp",
+  "file": "C:/Users/HP/Desktop/Parking/tests/ParkingLotTests.cpp",
+  "output": "CMakeFiles/ParkingLotTests.dir/tests/ParkingLotTests.cpp.obj"
+}
+]

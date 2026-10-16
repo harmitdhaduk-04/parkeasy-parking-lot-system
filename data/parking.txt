@@ -1,0 +1,2 @@
+# Parking Lot Management System Records
+# Format: TYPE|REGISTRATION|OWNER|HOURS|SLOT|TICKET_ID|ENTRY_TIME
