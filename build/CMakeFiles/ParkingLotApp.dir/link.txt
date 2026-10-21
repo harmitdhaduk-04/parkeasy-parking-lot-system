@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\ParkingLotApp.dir/objects.a
-C:\MinGW\bin\ar.exe qc CMakeFiles\ParkingLotApp.dir/objects.a @CMakeFiles\ParkingLotApp.dir\objects1.rsp
-C:\MinGW\bin\c++.exe -Wl,--whole-archive CMakeFiles\ParkingLotApp.dir/objects.a -Wl,--no-whole-archive -o ParkingLotApp.exe -Wl,--out-implib,libParkingLotApp.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\ParkingLotApp.dir\linkLibs.rsp

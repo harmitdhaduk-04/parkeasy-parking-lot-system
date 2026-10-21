@@ -1,329 +1,408 @@
 #include <iostream>
-#include <string>
-#include <limits>
-#include <memory>
+#include <fstream>
 #include <iomanip>
-#include "../include/ParkingLot.h"
-#include "../include/Car.h"
-#include "../include/Bike.h"
-#include "../include/ParkingFeeCalculator.h"
-#include "../include/FileManager.h"
+#include <string>
+using namespace std;
 
-// Constant file path for persistence
-const std::string DATA_FILE_PATH = "data/parking.txt";
+// ================= VEHICLE CLASS =================
 
-// Helper for safe integer input
-int getValidInteger(const std::string& prompt, int minVal = 0, int maxVal = 100000)
+class Vehicle
 {
-    int value;
-    while (true)
+protected:
+    string number;
+    string owner;
+    int hours;
+
+public:
+    // Static data member
+    static int totalVehicles;
+
+    // Constructor
+    Vehicle(string n = "", string o = "", int h = 0)
     {
-        std::cout << prompt;
-        if (std::cin >> value)
+        this->number = n;
+        this->owner = o;
+        this->hours = h;
+    }
+
+    // Virtual function
+    virtual void display()
+    {
+        cout << "Vehicle Number : " << number << endl;
+        cout << "Owner Name     : " << owner << endl;
+        cout << "Parking Hours  : " << hours << endl;
+    }
+
+    // Pure virtual function
+    virtual double calculateCharge() = 0;
+
+    // Getter
+    string getNumber()
+    {
+        return number;
+    }
+
+    // Function overloading
+    void searchVehicle(string n)
+    {
+        if (number == n)
+            cout << "Vehicle Found!" << endl;
+    }
+
+    void searchVehicle()
+    {
+        cout << "Vehicle Number: " << number << endl;
+    }
+
+    // Operator overloading
+    bool operator==(Vehicle &v)
+    {
+        return number == v.number;
+    }
+
+    // Destructor
+    virtual ~Vehicle()
+    {
+    }
+
+    // Friend function
+    friend void showTotalVehicles();
+};
+
+// Initialize static variable
+int Vehicle::totalVehicles = 0;
+
+
+// ================= CAR CLASS =================
+
+class Car : public Vehicle
+{
+public:
+
+    Car(string n = "", string o = "", int h = 0)
+        : Vehicle(n, o, h)
+    {
+        totalVehicles++;
+    }
+
+    // Function overriding
+    void display() override
+    {
+        cout << "\n--- CAR DETAILS ---" << endl;
+        Vehicle::display();
+        cout << "Vehicle Type   : Car" << endl;
+        cout << "Parking Charge : Rs. "
+             << calculateCharge() << endl;
+    }
+
+    double calculateCharge() override
+    {
+        return hours * 50;
+    }
+};
+
+
+// ================= BIKE CLASS =================
+
+class Bike : public Vehicle
+{
+public:
+
+    Bike(string n = "", string o = "", int h = 0)
+        : Vehicle(n, o, h)
+    {
+        totalVehicles++;
+    }
+
+    void display() override
+    {
+        cout << "\n--- BIKE DETAILS ---" << endl;
+        Vehicle::display();
+        cout << "Vehicle Type   : Bike" << endl;
+        cout << "Parking Charge : Rs. "
+             << calculateCharge() << endl;
+    }
+
+    double calculateCharge() override
+    {
+        return hours * 20;
+    }
+};
+
+
+// ================= FRIEND FUNCTION =================
+
+void showTotalVehicles()
+{
+    cout << "\nTotal Vehicles Created: "
+         << Vehicle::totalVehicles << endl;
+}
+
+
+// ================= TEMPLATE FUNCTION =================
+
+template <class T>
+void showMessage(T message)
+{
+    cout << message << endl;
+}
+
+
+// ================= PARKING LOT CLASS =================
+
+class ParkingLot
+{
+private:
+
+    Vehicle *vehicles[10];
+
+    int count;
+
+public:
+
+    // Constructor
+    ParkingLot()
+    {
+        count = 0;
+
+        for (int i = 0; i < 10; i++)
+            vehicles[i] = nullptr;
+    }
+
+    // Add vehicle
+    void addVehicle()
+    {
+        if (count >= 10)
         {
-            if (value >= minVal && value <= maxVal)
-            {
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                return value;
-            }
-            std::cout << "[Input Error] Please enter a value between "
-                      << minVal << " and " << maxVal << ".\n";
+            throw "Parking Lot is Full!";
+        }
+
+        int type;
+        string number, owner;
+        int hours;
+
+        cout << "\nEnter Vehicle Type:" << endl;
+        cout << "1. Car" << endl;
+        cout << "2. Bike" << endl;
+        cout << "Enter choice: ";
+        cin >> type;
+
+        cout << "Enter Vehicle Number: ";
+        cin >> number;
+
+        cout << "Enter Owner Name: ";
+        cin >> owner;
+
+        cout << "Enter Parking Hours: ";
+        cin >> hours;
+
+        if (hours <= 0)
+        {
+            throw "Invalid parking hours!";
+        }
+
+        if (type == 1)
+        {
+            vehicles[count] =
+                new Car(number, owner, hours);
+        }
+        else if (type == 2)
+        {
+            vehicles[count] =
+                new Bike(number, owner, hours);
         }
         else
         {
-            std::cout << "[Input Error] Invalid input. Please enter a valid number.\n";
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            throw "Invalid Vehicle Type!";
         }
+
+        count++;
+
+        cout << "\nVehicle parked successfully!" << endl;
     }
-}
 
-// Helper for non-empty string input
-std::string getValidString(const std::string& prompt)
-{
-    std::string value;
-    while (true)
+
+    // Display all vehicles
+    void displayVehicles()
     {
-        std::cout << prompt;
-        std::getline(std::cin, value);
-
-        // Trim leading and trailing whitespace
-        size_t first = value.find_first_not_of(" \t\r\n");
-        if (first != std::string::npos)
+        if (count == 0)
         {
-            size_t last = value.find_last_not_of(" \t\r\n");
-            value = value.substr(first, (last - first + 1));
-            return value;
+            cout << "\nNo vehicles in parking lot." << endl;
+            return;
         }
-        std::cout << "[Input Error] Input cannot be blank. Please try again.\n";
-    }
-}
 
-void handleParkVehicle(ParkingLot& parkingLot)
-{
-    std::cout << "\n--- PARK A VEHICLE ---\n";
-    std::cout << "Select Vehicle Type:\n";
-    std::cout << "1. Car (Rate: Rs. " << ParkingFeeCalculator::getCarHourlyRate() << " / hr)\n";
-    std::cout << "2. Bike (Rate: Rs. " << ParkingFeeCalculator::getBikeHourlyRate() << " / hr)\n";
-    int typeChoice = getValidInteger("Enter choice (1-2): ", 1, 2);
+        cout << "\n========== PARKED VEHICLES ==========\n";
 
-    std::string regNumber = getValidString("Enter Vehicle Registration Number: ");
-    std::string ownerName = getValidString("Enter Owner Name: ");
-    int hours = getValidInteger("Enter Estimated Parking Duration (hours): ", 1, 720);
-
-    std::unique_ptr<Vehicle> vehicle;
-    if (typeChoice == 1)
-    {
-        vehicle = std::make_unique<Car>(regNumber, ownerName, hours);
-    }
-    else
-    {
-        vehicle = std::make_unique<Bike>(regNumber, ownerName, hours);
-    }
-
-    try
-    {
-        ParkingTicket ticket = parkingLot.parkVehicle(std::move(vehicle));
-        std::cout << "\n[Success] Vehicle successfully parked!\n";
-        ticket.displayTicket(std::cout);
-    }
-    catch (const ParkingException& ex)
-    {
-        std::cout << "\n[Parking Error] " << ex.what() << "\n";
-    }
-    catch (const std::exception& ex)
-    {
-        std::cout << "\n[Unexpected Error] " << ex.what() << "\n";
-    }
-}
-
-void handleSearchVehicle(const ParkingLot& parkingLot)
-{
-    std::cout << "\n--- SEARCH VEHICLE ---\n";
-    std::cout << "Search By:\n";
-    std::cout << "1. Registration Number\n";
-    std::cout << "2. Parking Space (Slot Number)\n";
-    int choice = getValidInteger("Enter choice (1-2): ", 1, 2);
-
-    const Vehicle* vehicle = nullptr;
-    const ParkingTicket* ticket = nullptr;
-
-    if (choice == 1)
-    {
-        std::string reg = getValidString("Enter Vehicle Registration Number: ");
-        // Demonstrating overloaded searchVehicle(const std::string&)
-        vehicle = parkingLot.searchVehicle(reg);
-        ticket = parkingLot.getTicket(reg);
-    }
-    else
-    {
-        int slot = getValidInteger("Enter Parking Slot Number (1-10): ", 1, parkingLot.getCapacity());
-        // Demonstrating overloaded searchVehicle(int)
-        vehicle = parkingLot.searchVehicle(slot);
-        ticket = parkingLot.getTicketBySlot(slot);
-    }
-
-    if (vehicle != nullptr)
-    {
-        std::cout << "\n========================================\n";
-        std::cout << "             VEHICLE FOUND              \n";
-        std::cout << "========================================\n";
-        if (ticket)
+        for (int i = 0; i < count; i++)
         {
-            std::cout << "Parking Space  : Slot #" << ticket->getAssignedSlot() << "\n";
-            std::cout << "Ticket ID      : " << ticket->getTicketId() << "\n";
+            vehicles[i]->display();
+            cout << "-----------------------------------\n";
         }
-        vehicle->display(std::cout);
-        std::cout << "========================================\n";
-    }
-    else
-    {
-        std::cout << "\n[Not Found] No vehicle matches your search criteria.\n";
-    }
-}
-
-void handleRemoveVehicle(ParkingLot& parkingLot)
-{
-    std::cout << "\n--- REMOVE VEHICLE & BILLING ---\n";
-    if (parkingLot.getOccupiedCount() == 0)
-    {
-        std::cout << "[Notice] Parking lot is currently empty. No vehicles to remove.\n";
-        return;
     }
 
-    std::string reg = getValidString("Enter Vehicle Registration Number to remove: ");
-    ParkingTicket ticket;
 
-    try
+    // Search vehicle
+    void searchVehicle()
     {
-        double finalFee = parkingLot.removeVehicle(reg, &ticket);
-        std::cout << "\n========================================\n";
-        std::cout << "            CHECKOUT RECEIPT            \n";
-        std::cout << "========================================\n";
-        std::cout << "Ticket ID       : " << ticket.getTicketId() << "\n";
-        std::cout << "Released Space  : Slot #" << ticket.getAssignedSlot() << "\n";
-        std::cout << "Registration No : " << ticket.getRegistrationNumber() << "\n";
-        std::cout << "Owner Name      : " << ticket.getOwnerName() << "\n";
-        std::cout << "Vehicle Type    : " << ParkingFeeCalculator::vehicleTypeToString(ticket.getVehicleType()) << "\n";
-        std::cout << "Duration Parked : " << ticket.getParkingHours() << " hrs\n";
-        std::cout << "Total Fee Paid  : Rs. " << std::fixed << std::setprecision(2) << finalFee << "\n";
-        std::cout << "========================================\n";
-        std::cout << "[Success] Slot #" << ticket.getAssignedSlot() << " is now released and available.\n";
-    }
-    catch (const VehicleNotFoundException& ex)
-    {
-        std::cout << "\n[Error] " << ex.what() << "\n";
-    }
-    catch (const std::exception& ex)
-    {
-        std::cout << "\n[Unexpected Error] " << ex.what() << "\n";
-    }
-}
+        string number;
 
-void handleShowSpaces(const ParkingLot& parkingLot)
-{
-    std::cout << "\n========================================\n";
-    std::cout << "         PARKING SPACES STATUS          \n";
-    std::cout << "========================================\n";
-    std::cout << "Total Capacity  : " << parkingLot.getCapacity() << " spaces\n";
-    std::cout << "Occupied Spaces : " << parkingLot.getOccupiedCount() << "\n";
-    std::cout << "Available Spaces: " << parkingLot.getAvailableCount() << "\n\n";
+        cout << "\nEnter vehicle number to search: ";
+        cin >> number;
 
-    std::cout << "Available Slots: ";
-    auto available = parkingLot.getAvailableSlots();
-    if (available.empty())
-    {
-        std::cout << "None (Full)";
-    }
-    else
-    {
-        for (size_t i = 0; i < available.size(); ++i)
+        bool found = false;
+
+        for (int i = 0; i < count; i++)
         {
-            std::cout << "#" << available[i] << (i + 1 < available.size() ? ", " : "");
+            if (vehicles[i]->getNumber() == number)
+            {
+                cout << "\nVehicle Found!" << endl;
+                vehicles[i]->display();
+                found = true;
+                break;
+            }
         }
-    }
-    std::cout << "\n";
 
-    std::cout << "Occupied Slots : ";
-    auto occupied = parkingLot.getOccupiedSlots();
-    if (occupied.empty())
-    {
-        std::cout << "None";
+        if (!found)
+            cout << "\nVehicle not found." << endl;
     }
-    else
+
+
+    // Remove vehicle
+    void removeVehicle()
     {
-        for (size_t i = 0; i < occupied.size(); ++i)
+        string number;
+
+        cout << "\nEnter vehicle number to remove: ";
+        cin >> number;
+
+        for (int i = 0; i < count; i++)
         {
-            std::cout << "#" << occupied[i] << (i + 1 < occupied.size() ? ", " : "");
+            if (vehicles[i]->getNumber() == number)
+            {
+                delete vehicles[i];
+
+                for (int j = i; j < count - 1; j++)
+                {
+                    vehicles[j] = vehicles[j + 1];
+                }
+
+                vehicles[count - 1] = nullptr;
+
+                count--;
+
+                cout << "\nVehicle removed successfully!" << endl;
+                return;
+            }
         }
+
+        cout << "\nVehicle not found." << endl;
     }
-    std::cout << "\n========================================\n";
-}
 
-void handleShowStatistics(const ParkingLot& parkingLot)
-{
-    // Demonstrate friend function
-    showTotalVehicles();
 
-    std::cout << "\n--- REAL-TIME OCCUPANCY METRICS ---\n";
-    std::cout << "Currently Parked Vehicles : " << parkingLot.getOccupiedCount() << "\n";
-    std::cout << "Available Spaces Remaining: " << parkingLot.getAvailableCount() << "\n";
-    double occupancyRate = (static_cast<double>(parkingLot.getOccupiedCount()) / parkingLot.getCapacity()) * 100.0;
-    std::cout << "Current Occupancy Rate    : " << std::fixed << std::setprecision(1) << occupancyRate << "%\n";
-
-    double totalActiveBilling = 0.0;
-    for (const auto& slot : parkingLot.getSlots())
+    // Save data into file
+    void saveToFile()
     {
-        if (slot.isOccupied && slot.vehicle)
+        ofstream file("parking.txt");
+
+        if (!file)
         {
-            totalActiveBilling += slot.vehicle->calculateCharge();
+            cout << "File could not be opened!" << endl;
+            return;
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            file << vehicles[i]->getNumber()
+                 << endl;
+        }
+
+        file.close();
+
+        cout << "\nParking data saved to file." << endl;
+    }
+
+
+    // Destructor
+    ~ParkingLot()
+    {
+        for (int i = 0; i < count; i++)
+        {
+            delete vehicles[i];
         }
     }
-    std::cout << "Current Accrued Fees      : Rs. " << std::fixed << std::setprecision(2) << totalActiveBilling << "\n";
-    std::cout << "-----------------------------------\n";
-}
+};
 
-void handleSaveData(const ParkingLot& parkingLot)
-{
-    std::cout << "\nSaving parking records to '" << DATA_FILE_PATH << "'...\n";
-    if (FileManager::saveToFile(DATA_FILE_PATH, parkingLot))
-    {
-        std::cout << "[Success] Records saved successfully to " << DATA_FILE_PATH << "\n";
-    }
-    else
-    {
-        std::cout << "[Error] Failed to save parking records!\n";
-    }
-}
+
+// ================= MAIN FUNCTION =================
 
 int main()
 {
-    // Template function usage
-    showMessage("==================================================");
-    showMessage("   PARKING LOT MANAGEMENT SYSTEM (OOP in C++17)   ");
-    showMessage("==================================================");
+    ParkingLot parking;
 
-    ParkingLot parkingLot(10);
+    int choice;
 
-    // Auto-load saved records upon application startup
-    std::cout << "[Initialization] Loading existing parking records from disk...\n";
-    if (FileManager::loadFromFile(DATA_FILE_PATH, parkingLot))
-    {
-        std::cout << "[Initialization] " << parkingLot.getOccupiedCount()
-                  << " vehicle(s) restored from storage.\n";
-    }
+    showMessage("=================================");
+    showMessage("   PARKING LOT MANAGEMENT SYSTEM");
+    showMessage("=================================");
 
-    int choice = 0;
     do
     {
-        std::cout << "\n\n================== MAIN MENU ==================\n";
-        std::cout << "1. Park a Vehicle\n";
-        std::cout << "2. Display All Parked Vehicles\n";
-        std::cout << "3. Search Vehicle\n";
-        std::cout << "4. Remove Vehicle and Calculate Fee\n";
-        std::cout << "5. Show Available Parking Spaces\n";
-        std::cout << "6. Show Parking Statistics\n";
-        std::cout << "7. Save Data\n";
-        std::cout << "8. Exit\n";
-        std::cout << "===============================================\n";
+        cout << "\n\n========== MENU ==========" << endl;
 
-        choice = getValidInteger("Enter your choice (1-8): ", 1, 8);
+        cout << "1. Park Vehicle" << endl;
+        cout << "2. Display Vehicles" << endl;
+        cout << "3. Search Vehicle" << endl;
+        cout << "4. Remove Vehicle" << endl;
+        cout << "5. Save Data to File" << endl;
+        cout << "6. Show Total Vehicles" << endl;
+        cout << "7. Exit" << endl;
 
-        switch (choice)
+        cout << "\nEnter your choice: ";
+        cin >> choice;
+
+        try
         {
+            switch (choice)
+            {
             case 1:
-                handleParkVehicle(parkingLot);
+                parking.addVehicle();
                 break;
+
             case 2:
-                // Demonstrates overloaded displayVehicles()
-                parkingLot.displayVehicles();
+                parking.displayVehicles();
                 break;
+
             case 3:
-                handleSearchVehicle(parkingLot);
+                parking.searchVehicle();
                 break;
+
             case 4:
-                handleRemoveVehicle(parkingLot);
+                parking.removeVehicle();
                 break;
+
             case 5:
-                handleShowSpaces(parkingLot);
+                parking.saveToFile();
                 break;
+
             case 6:
-                handleShowStatistics(parkingLot);
+                showTotalVehicles();
                 break;
+
             case 7:
-                handleSaveData(parkingLot);
+                cout << "\nThank you!" << endl;
                 break;
-            case 8:
-                std::cout << "\n[Shutdown] Performing automatic data save...\n";
-                FileManager::saveToFile(DATA_FILE_PATH, parkingLot);
-                showMessage("Data safely stored. Thank you for using Parking Lot Management System!");
-                break;
+
             default:
-                std::cout << "[Error] Invalid option selected.\n";
-                break;
+                cout << "\nInvalid choice!" << endl;
+            }
         }
 
-    } while (choice != 8);
+        catch (const char *msg)
+        {
+            cout << "\nError: " << msg << endl;
+        }
+
+    } while (choice != 7);
 
     return 0;
 }

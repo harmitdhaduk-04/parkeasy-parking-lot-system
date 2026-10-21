@@ -1,2 +1,0 @@
-C:\MinGW\bin\ar.exe qc libParkingLotLib.a CMakeFiles/ParkingLotLib.dir/src/ParkingFeeCalculator.cpp.obj CMakeFiles/ParkingLotLib.dir/src/Vehicle.cpp.obj CMakeFiles/ParkingLotLib.dir/src/Car.cpp.obj CMakeFiles/ParkingLotLib.dir/src/Bike.cpp.obj CMakeFiles/ParkingLotLib.dir/src/ParkingTicket.cpp.obj CMakeFiles/ParkingLotLib.dir/src/ParkingLot.cpp.obj CMakeFiles/ParkingLotLib.dir/src/FileManager.cpp.obj
-C:\MinGW\bin\ranlib.exe libParkingLotLib.a

@@ -1,6 +1,0 @@
-C:/Users/HP/Desktop/Parking/build/CMakeFiles/ParkingLotLib.dir
-C:/Users/HP/Desktop/Parking/build/CMakeFiles/ParkingLotApp.dir
-C:/Users/HP/Desktop/Parking/build/CMakeFiles/ParkingLotTests.dir
-C:/Users/HP/Desktop/Parking/build/CMakeFiles/test.dir
-C:/Users/HP/Desktop/Parking/build/CMakeFiles/edit_cache.dir
-C:/Users/HP/Desktop/Parking/build/CMakeFiles/rebuild_cache.dir
